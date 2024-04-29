@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+    <title>API tester</title>
+    <style>
+      main {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        text-align: center;
+      }
+  
+      article {
+        box-shadow: 2px 2px 6px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+      }
+  
+      img {
+        width: 100px
+      }
+  
+      button {
+        border: transparent;
+        background-color: rgb(218, 41, 106);
+        color: white;
+        padding: .5em;
+        border-radius: 7px;
+        text-transform: uppercase;
+        text-align: center;
+      }
+    </style>
+      <script type="module">
+    fetch("http://localhost:3000/music").then(res => res.json())
+      .then(movies => {
+        const html = movies.map(m => {
+          return `
+          <article data-id="${m.id}">
+            
+              <img src="${m.poster}" loading="lazy">
+              <h3>${m.artist}</h2>
+              <p>${m.start}</p>
+              <p>${m.genres}</p>
+              <p>${m.origin}</p>
+              <p>${m.songs}</p> 
+              <p>${m.members}</p>              
+                       
+              <button>Eliminar</button>              
+          </article>
+              `;
+        }).join('');
+        document.querySelector("main").innerHTML = html;
+
+
+        const form =document.getElementById("form");
+        form.addEventListener("submit", (e)=>{
+            e.preventDefault();
+            const newMusic = new FormData(form);
+            fetch("http://localhost:3000/music",{
+                method: "POST", 
+                body: newMusic
+            })
+        })
+
+
+        document.addEventListener("click",e=>{
+            if(e.target.matches("button")){
+                const article = e.target.closest ("article");
+                const id = article.dataset.id;
+                fetch(`http://localhost:3000/music/${id}`,{
+                    method : "DELETE"
+                })
+            }
+        })
+        }
+        ); 
+
+    </script>
+ 
+
+</head>
+<body>
+       
+    <main></main>
+      
+ 
+    <form id="form" enctype="multipart/form-data">
+        <input type="text" name="artist" placeholder="Artista">
+        <input type="text" name="members" placeholder="Miembros">
+        <input type="text" name="start" placeholder="Comienzo">
+        <input type="text" name="origin" placeholder="Origen">
+        <input type="text" name="songs" placeholder="Canciones">
+        <input type="file" name="postername" >
+        <label for="">
+            <input type="checkbox" name="genres" value="Heavy Metal">Heavy Metal
+        </label>
+        <label for="">
+            <input type="checkbox" name="genres" value="Rock">Rock
+        </label>
+        <label for="">
+            <input type="checkbox" name="genres" value="Rock Progresivo">Rock Progresivo
+        </label>
+        <label for="">
+            <input type="checkbox" name="genres" value="Reggae">Reggae
+        </label>
+        <label for="">
+            <input type="checkbox" name="genres" value="Industrial Metal">Industrial Metal
+        </label>
+        <label for="">
+            <input type="checkbox" name="genres" value="Post-Hardcore">Post-Hardcore
+        </label>
+        <label for="">
+            <input type="checkbox" name="genres" value="Metal Alternativo">Metal Alternativo
+        </label>
+        <label for="">
+            <input type="checkbox" name="genres" value="Rock Industrial">Rock Industrial
+        </label>
+        <label for="">
+            <input type="checkbox" name="genre" value="Metalcore">Metalcore
+        </label>
+        <input type="submit" name="save">
+    </form>
+
+
+
+
+</body>
+</html>

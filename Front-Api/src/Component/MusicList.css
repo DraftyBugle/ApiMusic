@@ -1,0 +1,29 @@
+.Card{
+
+
+display: grid;
+grid-template-columns: 1fr 1fr 1fr 1fr ;
+
+
+   gap: 20px;
+    
+}
+.Img{
+    width: 200px;
+    height: 180px;
+    border-radius: 20px;
+}
+.CardOne{
+    background-color: rgb(57, 57, 60);
+    border: solid 1px;
+    border-radius: 20px;
+}
+.title{
+    font-size: 20px;
+color: white;
+text-transform: uppercase;
+}
+.members{
+    font-size: 10px;
+    color: white;
+}
